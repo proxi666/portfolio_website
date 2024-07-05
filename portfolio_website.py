@@ -40,7 +40,7 @@ with col1:
     st.write("Hello from this side, this is Siddhant diwaker he has recently completed mechatronics from SRM University. askjdbna s laskndasdl kansdlkasnalskdnaslkdnaalskdnalksnd asldknasldkna alskdn alksdnaalskdn as asdasknd askdnlaksnd")
 
 with col2:
-    st.video("https://www.youtube.com/watch?v=_2UqdX8dcsU")
+    st.write(" ")
 
 st.subheader(" ")
 st.title("My setup")
