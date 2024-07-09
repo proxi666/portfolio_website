@@ -1,78 +1,169 @@
 import streamlit as st
-import google.generativeai as genai
-api_key = st.secrets["GOOGLE_API_KEY"]
+from streamlit_lottie import st_lottie
+import requests
 
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
 
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Hi :wave:")
-    st.title("I am Siddhant Diwaker")
+# Page config
+st.set_page_config(page_title="Siddhant Diwaker | Portfolio", layout="wide")
 
-with col2:
-    st.image("images/siddhant.jpg")
+# Custom CSS
+st.markdown("""
+<style>
+    .css-18e3th9 {
+        padding-top: 0rem;
+        padding-bottom: 10rem;
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+    .css-1d391kg {
+        padding-top: 3.5rem;
+        padding-right: 1rem;
+        padding-bottom: 3.5rem;
+        padding-left: 1rem;
+    }
+    .stTitle {
+        font-size: 4rem;
+        font-weight: 700;
+    }
+    .stSubheader {
+        font-size: 1.5rem;
+    }
+    .project-card {
+        background-color: #f0f2f6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-st.subheader(" ")
+# Header Section
+def header():
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.title("Siddhant Diwaker")
+        st.subheader("Mechatronics Engineer | AI Enthusiast | Innovator")
+    with col2:
+        lottie_coding = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json")
+        st_lottie(lottie_coding, height=200, key="coding")
 
-persona = """ You are Siddhant AI bot. You help people answer questions about your self 
-(i.e Siddhant) Answer as if you are responding . dont answer in second or third person.
-If you don't know they answer you simply say "That's a secret" 
-Here is more info about Siddhant (also u cant make it more good by adding things u like): 
-Siddhant diwaker is a student who has done Mechatronics Engineering from SRM University of Science and technology
-He is currently in ahmedabad making self project to highlight his resume over other people
-"""
+# About Section
+def about():
+    st.header("About Me")
+    st.write("""
+    I'm a recent graduate in Mechatronics Engineering from SRM University of Science and Technology, 
+    with a passion for robotics, AI, and cutting-edge technology. Based in Ahmedabad, I'm actively 
+    developing projects that showcase my skills in automation, machine learning, and system integration.
+    
+    My goal is to leverage my interdisciplinary background to create innovative solutions that bridge 
+    the gap between mechanical systems and intelligent software.
+    """)
 
-st.title("Siddhant's AI Bot")
-# st.write("Ask anything about me")
-user_question = st.text_input("Ask anything about me")
-if st.button("ASK", use_container_width=400):
-    prompt = persona + "here is the question that the user will input" + user_question
-    response = model.generate_content(prompt)
-    st.write(response.text)
+# Skills Section
+def skills():
+    st.header("Skills")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.subheader("Programming")
+        st.progress(90)
+        st.caption("Python, C++, MATLAB")
+    
+    with col2:
+        st.subheader("Robotics")
+        st.progress(85)
+        st.caption("ROS, Arduino, Sensor Integration")
+    
+    with col3:
+        st.subheader("AI/ML")
+        st.progress(80)
+        st.caption("TensorFlow, PyTorch, Computer Vision")
 
-st.title(" ")
+# Projects Section
+def projects():
+    st.header("Featured Projects")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container():
+            st.subheader("Autonomous Drone Navigation System")
+            st.image("https://via.placeholder.com/400x200.png?text=Drone+Project")
+            st.markdown("""
+            <div class="project-card">
+                • Developed a vision-based navigation system for drones<br>
+                • Implemented SLAM algorithms for real-time mapping<br>
+                • Achieved 95% accuracy in obstacle avoidance tests
+            </div>
+            """, unsafe_allow_html=True)
+    
+    with col2:
+        with st.container():
+            st.subheader("Smart Manufacturing Process Optimizer")
+            st.image("https://via.placeholder.com/400x200.png?text=Manufacturing+Project")
+            st.markdown("""
+            <div class="project-card">
+                • Created an AI-driven system to optimize production lines<br>
+                • Reduced manufacturing defects by 30%<br>
+                • Integrated IoT sensors for real-time monitoring
+            </div>
+            """, unsafe_allow_html=True)
 
+# Experience Section
+def experience():
+    st.header("Professional Experience")
+    
+    st.subheader("Robotics Research Intern | TechInnovate Labs")
+    st.write("June 2023 - August 2023")
+    st.markdown("""
+    • Contributed to the development of an industrial robot arm with advanced grasping capabilities<br>
+    • Implemented and fine-tuned machine learning models for object recognition<br>
+    • Collaborated with a cross-functional team of engineers and researchers
+    """)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Bio")
-    st.write("Hello from this side, this is Siddhant diwaker he has recently completed mechatronics from SRM University. askjdbna s laskndasdl kansdlkasnalskdnaslkdnaalskdnalksnd asldknasldkna alskdn alksdnaalskdn as asdasknd askdnlaksnd")
+# Education Section
+def education():
+    st.header("Education")
+    
+    st.subheader("B.Tech in Mechatronics Engineering")
+    st.write("SRM University of Science and Technology | 2020 - 2024")
+    st.write("CGPA: 3.8/4.0")
+    st.markdown("""
+    • Relevant Coursework: Robotics, Control Systems, Machine Learning, Embedded Systems<br>
+    • Senior Project: Development of a Soft Robotic Gripper for Delicate Object Manipulation
+    """)
 
-with col2:
-    st.write(" ")
+# Contact Section
+def contact():
+    st.header("Get in Touch")
+    col1, col2, col3 = st.columns([1,1,2])
+    
+    with col1:
+        st.button("📧 Email Me")
+    
+    with col2:
+        st.button("🔗 LinkedIn")
+    
+    with col3:
+        st.text_input("Leave a message", placeholder="Your message here...")
 
-st.subheader(" ")
-st.title("My setup")
-st.image("images/g2.jpeg")
+# Main function to organize the layout
+def main():
+    header()
+    about()
+    skills()
+    projects()
+    experience()
+    education()
+    contact()
+    
+    st.markdown("---")
+    st.markdown("© 2024 Siddhant Diwaker | All Rights Reserved")
 
-st.write(" ")
-st.title("My Skills")
-st.slider("programming", 0, 100, 90)
-st.slider("Robotics", 0, 100, 80)
-st.slider("Leadership", 0, 100, 90)
-
-st.write(" ")
-st.title("Gallery")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.image("images/g2.jpg")
-    st.image("images/g3.jpg")
-    st.image("images/g4.jpg")
-
-with col2:
-    st.image("images/g5.jpg")
-    st.image("images/g6.jpg")
-    st.image("images/g7.jpg")
-
-with col3:
-    st.image("images/g8.jpg")
-    st.image("images/g9.jpg")
-    st.image("images/g10.jpg")
-
-st.write(" ")
-st.write("CONTACT")
-st.title("For any inquiries, email at: ")
-st.subheader("siddhantdiwaker.sd@gmail.com")
+if __name__ == "__main__":
+    main()
